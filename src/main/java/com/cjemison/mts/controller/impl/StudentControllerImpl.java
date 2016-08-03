@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ import javax.validation.Valid;
  * Created by cjemison on 7/22/16.
  */
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/v1", consumes = MediaType.APPLICATION_JSON_VALUE)
 public class StudentControllerImpl implements StudentController {
   private static final Logger logger = LoggerFactory.getLogger(StudentControllerImpl.class);

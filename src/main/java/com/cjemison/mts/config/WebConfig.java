@@ -10,6 +10,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -40,5 +42,15 @@ public class WebConfig extends WebMvcConfigurerAdapter implements InitializingBe
   @Override
   public void afterPropertiesSet() throws Exception {
 
+  }
+
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/v1/**")
+          .allowedOrigins("*")
+          .allowedMethods("POST")
+          .allowedHeaders(HttpHeaders.ACCEPT, HttpHeaders.CONTENT_TYPE)
+          .exposedHeaders(HttpHeaders.ACCEPT, HttpHeaders.CONTENT_TYPE)
+          .allowCredentials(true).maxAge(3600);
   }
 }
