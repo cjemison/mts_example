@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 @Repository
 public class GetDAOImpl implements GetDAO {
-    private static final Logger logger = LoggerFactory.getLogger(StoreIdDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(StoreDAOImpl.class);
     private final String TABLE_NAME = "student_ids";
     private final String[] ATTRIBUES = {"id", "createdDate"};
 

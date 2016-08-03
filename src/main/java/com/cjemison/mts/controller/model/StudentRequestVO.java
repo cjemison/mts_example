@@ -6,15 +6,15 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * Created by cjemison on 7/22/16.
  */
-public class StudentVORequest {
+public class StudentRequestVO {
     @NotBlank
     private String id;
 
     @JsonCreator
-    public StudentVORequest() {
+    public StudentRequestVO() {
     }
 
-    public StudentVORequest(String id) {
+    public StudentRequestVO(String id) {
         this.id = id;
     }
 
@@ -28,7 +28,7 @@ public class StudentVORequest {
 
     @Override
     public String toString() {
-        return "StudentVORequest{" +
+        return "StudentRequestVO{" +
                 "id='" + id + '\'' +
                 '}';
     }

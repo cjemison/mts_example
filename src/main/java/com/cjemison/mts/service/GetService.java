@@ -1,6 +1,6 @@
 package com.cjemison.mts.service;
 
-import com.cjemison.mts.controller.model.StudentVOResponse;
+import com.cjemison.mts.controller.model.StudentResponseVO;
 import rx.Observable;
 
 import java.util.Optional;
@@ -10,5 +10,5 @@ import java.util.Optional;
  */
 public interface GetService {
 
-    Observable<Optional<StudentVOResponse>> get(final String id);
+    Observable<Optional<StudentResponseVO>> get(final String id);
 }

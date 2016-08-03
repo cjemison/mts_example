@@ -1,6 +1,6 @@
 package com.cjemison.mts.service.impl;
 
-import com.cjemison.mts.controller.model.StudentVOResponse;
+import com.cjemison.mts.controller.model.StudentResponseVO;
 import com.cjemison.mts.dao.GetDAO;
 import com.cjemison.mts.service.GetService;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class GetServiceImpl implements GetService {
     private String encryptedKey;
 
     @Override
-    public Observable<Optional<StudentVOResponse>> get(final String id) {
+    public Observable<Optional<StudentResponseVO>> get(final String id) {
         logger.debug("Id: {}", id);
         return Observable.just(Optional.of(id))
                 .filter(Optional::isPresent)
@@ -53,7 +53,7 @@ public class GetServiceImpl implements GetService {
                 .flatMap(enc -> getDAO.get(enc.get()))
                 .filter(Optional::isPresent)
                 .flatMap(b -> {
-                    StudentVOResponse response = new StudentVOResponse(id, b.get().getString("createdDate"));
+                    StudentResponseVO response = new StudentResponseVO(id, b.get().getString("createdDate"));
                     return Observable.just(Optional.of(response));
                 }).defaultIfEmpty(Optional.empty());
     }

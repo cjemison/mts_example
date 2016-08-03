@@ -30,14 +30,9 @@ repositories {
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
-    runtime('org.postgresql:postgresql')
-    //compile 'com.stormpath.spring:stormpath-default-spring-boot-starter:1.0.RC9.1'
     compile 'io.reactivex:rxjava:1.1.7'
-    // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk
     compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.20'
-    // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3
     compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.20'
-    // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-dynamodb
     compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: '1.11.20'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

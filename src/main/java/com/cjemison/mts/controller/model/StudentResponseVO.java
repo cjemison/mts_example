@@ -6,12 +6,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Created by cjemison on 7/23/16.
  */
-public class StudentVOResponse {
+public class StudentResponseVO {
     private final String id;
     private final String createdDate;
 
     @JsonCreator
-    public StudentVOResponse(@JsonProperty("id")
+    public StudentResponseVO(@JsonProperty("id")
                              final String id,
                              @JsonProperty("createdDate")
                              final String createdDate) {

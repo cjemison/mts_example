@@ -5,8 +5,9 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
-import com.amazonaws.services.dynamodbv2.model.ReturnValue;
-import com.cjemison.mts.dao.StoreIdDAO;
+import com.cjemison.mts.controller.model.StudentResponseVO;
+import com.cjemison.mts.dao.StoreDAO;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
@@ -14,17 +15,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import rx.Observable;
-import rx.exceptions.Exceptions;
 
 import java.util.Optional;
+
+import rx.Observable;
+import rx.exceptions.Exceptions;
 
 /**
  * Created by cjemison on 7/23/16.
  */
 @Repository
-public class StoreIdDAOImpl implements StoreIdDAO {
-    private static final Logger logger = LoggerFactory.getLogger(StoreIdDAOImpl.class);
+public class StoreDAOImpl implements StoreDAO {
+    private static final Logger logger = LoggerFactory.getLogger(StoreDAOImpl.class);
     private final String TABLE_NAME = "student_ids";
 
     @Autowired
@@ -34,12 +36,12 @@ public class StoreIdDAOImpl implements StoreIdDAO {
     private DateTimeFormatter dateTimeFormatter;
 
     @Override
-    public Observable<Optional<String>> store(final String id) {
+    public Observable<Optional<StudentResponseVO>> store(final String id) {
         return Observable.create(subscriber -> {
             subscriber.onNext(Optional.ofNullable(id));
             subscriber.onCompleted();
         }).flatMap(stringOptional -> {
-            Optional<String> optional = Optional.empty();
+            Optional<StudentResponseVO> optional = Optional.empty();
             try {
                 String createdDate = dateTimeFormatter.print(dateTime());
                 DynamoDB dynamoDB = new DynamoDB(amazonDynamoDBClient);
@@ -48,9 +50,8 @@ public class StoreIdDAOImpl implements StoreIdDAO {
                 putItemSpec.withItem(new Item()
                         .withPrimaryKey("id", id)
                         .withString("createdDate", createdDate));
-                putItemSpec.withReturnValues(ReturnValue.ALL_OLD);
                 table.putItem(putItemSpec);
-                optional = Optional.of(createdDate);
+                optional = Optional.of(new StudentResponseVO(id, createdDate));
             } catch (Exception e) {
                 logger.warn("### ERROR ###", e);
                 throw Exceptions.propagate(e);
