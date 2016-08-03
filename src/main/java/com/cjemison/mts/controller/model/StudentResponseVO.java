@@ -7,24 +7,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Created by cjemison on 7/23/16.
  */
 public class StudentResponseVO {
-    private final String id;
-    private final String createdDate;
+  private final String id;
+  private final String createdDate;
 
-    @JsonCreator
-    public StudentResponseVO(@JsonProperty("id")
-                             final String id,
-                             @JsonProperty("createdDate")
-                             final String createdDate) {
-        this.id = id;
-        this.createdDate = createdDate;
-    }
+  @JsonCreator
+  public StudentResponseVO(@JsonProperty("id")
+                           final String id,
+                           @JsonProperty("createdDate")
+                           final String createdDate) {
+    this.id = id;
+    this.createdDate = createdDate;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public String getCreatedDate() {
-        return createdDate;
-    }
+  public String getCreatedDate() {
+    return createdDate;
+  }
 
 }

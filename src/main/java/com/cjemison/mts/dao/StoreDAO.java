@@ -10,5 +10,5 @@ import rx.Observable;
  * Created by cjemison on 7/23/16.
  */
 public interface StoreDAO {
-    Observable<Optional<StudentResponseVO>> store(final String id);
+  Observable<Optional<StudentResponseVO>> store(final String id);
 }

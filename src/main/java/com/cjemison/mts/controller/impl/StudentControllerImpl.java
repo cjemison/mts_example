@@ -3,9 +3,9 @@ package com.cjemison.mts.controller.impl;
 import com.cjemison.mts.controller.StudentController;
 import com.cjemison.mts.controller.model.StudentRequestVO;
 import com.cjemison.mts.controller.model.StudentResponseVO;
+import com.cjemison.mts.service.GetService;
 import com.cjemison.mts.service.StoreService;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import java.util.List;
-
 import javax.validation.Valid;
-
-import rx.Observable;
 
 /**
  * Created by cjemison on 7/22/16.
@@ -34,10 +30,13 @@ public class StudentControllerImpl implements StudentController {
   private static final Logger logger = LoggerFactory.getLogger(StudentControllerImpl.class);
 
   @Autowired
+  private GetService getService;
+
+  @Autowired
   private StoreService storeService;
 
   @Override
-  @RequestMapping(value = "/id",
+  @RequestMapping(value = "/student",
         method = RequestMethod.POST,
         consumes = MediaType.APPLICATION_JSON_VALUE)
   public DeferredResult<ResponseEntity<?>> post(@RequestBody
@@ -54,16 +53,23 @@ public class StudentControllerImpl implements StudentController {
   }
 
   @Override
-  @RequestMapping(value = "/ids",
+  @RequestMapping(value = "/search",
         method = RequestMethod.POST,
         consumes = MediaType.APPLICATION_JSON_VALUE)
-  public DeferredResult<ResponseEntity<?>> postList(@RequestBody
-                                                    @Valid @NotEmpty List<StudentRequestVO> list) {
-    Assert.notNull(list);
-    logger.debug("Payload: {}", list);
+  public DeferredResult<ResponseEntity<?>> search(@RequestBody
+                                                  @Valid
+                                                  final StudentRequestVO studentRequestVO) {
+    Assert.notNull(studentRequestVO);
+    logger.debug("Payload: {}", studentRequestVO);
     final DeferredResult<ResponseEntity<?>> result = new DeferredResult<>();
-    Observable<List<StudentRequestVO>> observable = Observable.just(list);
-
+    getService.get(studentRequestVO.getId()).subscribe(studentResponseVO -> {
+      if (studentResponseVO.isPresent()) {
+        result.setResult(new ResponseEntity<StudentResponseVO>(studentResponseVO.get(),
+              HttpStatus.CREATED));
+      } else {
+        result.setErrorResult(ResponseEntity.notFound().build());
+      }
+    });
     return result;
   }
 }

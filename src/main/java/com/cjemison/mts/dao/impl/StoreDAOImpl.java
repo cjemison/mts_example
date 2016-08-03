@@ -26,41 +26,41 @@ import rx.exceptions.Exceptions;
  */
 @Repository
 public class StoreDAOImpl implements StoreDAO {
-    private static final Logger logger = LoggerFactory.getLogger(StoreDAOImpl.class);
-    private final String TABLE_NAME = "student_ids";
+  private static final Logger logger = LoggerFactory.getLogger(StoreDAOImpl.class);
+  private final String TABLE_NAME = "student_ids";
 
-    @Autowired
-    private AmazonDynamoDBClient amazonDynamoDBClient;
+  @Autowired
+  private AmazonDynamoDBClient amazonDynamoDBClient;
 
-    @Autowired
-    private DateTimeFormatter dateTimeFormatter;
+  @Autowired
+  private DateTimeFormatter dateTimeFormatter;
 
-    @Override
-    public Observable<Optional<StudentResponseVO>> store(final String id) {
-        return Observable.create(subscriber -> {
-            subscriber.onNext(Optional.ofNullable(id));
-            subscriber.onCompleted();
-        }).flatMap(stringOptional -> {
-            Optional<StudentResponseVO> optional = Optional.empty();
-            try {
-                String createdDate = dateTimeFormatter.print(dateTime());
-                DynamoDB dynamoDB = new DynamoDB(amazonDynamoDBClient);
-                Table table = dynamoDB.getTable(TABLE_NAME);
-                PutItemSpec putItemSpec = new PutItemSpec();
-                putItemSpec.withItem(new Item()
-                        .withPrimaryKey("id", id)
-                        .withString("createdDate", createdDate));
-                table.putItem(putItemSpec);
-                optional = Optional.of(new StudentResponseVO(id, createdDate));
-            } catch (Exception e) {
-                logger.warn("### ERROR ###", e);
-                throw Exceptions.propagate(e);
-            }
-            return Observable.just(optional);
-        });
-    }
+  @Override
+  public Observable<Optional<StudentResponseVO>> store(final String id) {
+    return Observable.create(subscriber -> {
+      subscriber.onNext(Optional.ofNullable(id));
+      subscriber.onCompleted();
+    }).flatMap(stringOptional -> {
+      Optional<StudentResponseVO> optional = Optional.empty();
+      try {
+        String createdDate = dateTimeFormatter.print(dateTime());
+        DynamoDB dynamoDB = new DynamoDB(amazonDynamoDBClient);
+        Table table = dynamoDB.getTable(TABLE_NAME);
+        PutItemSpec putItemSpec = new PutItemSpec();
+        putItemSpec.withItem(new Item()
+              .withPrimaryKey("id", id)
+              .withString("createdDate", createdDate));
+        table.putItem(putItemSpec);
+        optional = Optional.of(new StudentResponseVO(id, createdDate));
+      } catch (Exception e) {
+        logger.warn("### ERROR ###", e);
+        throw Exceptions.propagate(e);
+      }
+      return Observable.just(optional);
+    }).defaultIfEmpty(Optional.empty());
+  }
 
-    public DateTime dateTime() {
-        return new DateTime(DateTimeZone.UTC);
-    }
+  public DateTime dateTime() {
+    return new DateTime(DateTimeZone.UTC);
+  }
 }

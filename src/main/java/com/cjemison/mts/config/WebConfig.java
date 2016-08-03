@@ -3,6 +3,7 @@ package com.cjemison.mts.config;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,25 +20,25 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter implements InitializingBean {
 
-    @Value("${aws.accessKey}")
-    private String accessKey;
+  @Value("${aws.accessKey}")
+  private String accessKey;
 
-    @Value("${aws.password}")
-    private String secretKey;
+  @Value("${aws.password}")
+  private String secretKey;
 
-    @Bean
-    public AmazonDynamoDBClient amazonDynamoDBClient() throws Exception {
-        AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        return new AmazonDynamoDBClient(credentials);
-    }
+  @Bean
+  public AmazonDynamoDBClient amazonDynamoDBClient() throws Exception {
+    AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+    return new AmazonDynamoDBClient(credentials);
+  }
 
-    @Bean
-    public DateTimeFormatter dateTimeFormatter() {
-        return DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    }
+  @Bean
+  public DateTimeFormatter dateTimeFormatter() {
+    return DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+  }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+  @Override
+  public void afterPropertiesSet() throws Exception {
 
-    }
+  }
 }

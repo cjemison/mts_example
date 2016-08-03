@@ -30,7 +30,7 @@
     <!-- the level of the root level is set to DEBUG by default.       -->
     <root level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="File" />
+        <appender-ref ref="File"/>
     </root>
 
 </configuration>
