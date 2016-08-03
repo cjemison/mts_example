@@ -2,22 +2,35 @@
 
 <configuration>
 
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd'T'HH:mm:ss.SSS}|%p|${HOSTNAME}|MTS|%c.%M:%line|Id:%X{TRACKINGID}|Thread:%t|%msg%n"/>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 
-    <logger name="com.cjemison.mts" level="debug" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>
+    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/tmp/mts.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>/tmp/mts-%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="com.cjemison.mts" level="debug" additivity="false"/>
 
     <!-- Strictly speaking, the level attribute is not necessary since -->
     <!-- the level of the root level is set to DEBUG by default.       -->
-    <root level="INFO">
+    <root level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="File" />
     </root>
 
 </configuration>
