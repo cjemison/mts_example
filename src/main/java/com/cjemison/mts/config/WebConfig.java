@@ -51,6 +51,6 @@ public class WebConfig extends WebMvcConfigurerAdapter implements InitializingBe
           .allowedMethods("POST")
           .allowedHeaders(HttpHeaders.ACCEPT, HttpHeaders.CONTENT_TYPE)
           .exposedHeaders(HttpHeaders.ACCEPT, HttpHeaders.CONTENT_TYPE)
-          .allowCredentials(true).maxAge(3600);
+          .allowCredentials(false).maxAge(3600);
   }
 }
